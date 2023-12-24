@@ -121,3 +121,10 @@ void Cell::draw(sf::RenderWindow &window)
 
     window.draw(this->_rectangle);
 }
+
+void Cell::reset()
+{
+    this->_containsRed = false;
+    this->_containsYellow = false;
+    this->_highlighted = false;
+}

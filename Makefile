@@ -1,7 +1,7 @@
 # THE NAME OF YOUR EXECUTABLE
 TARGET = Connect4
 # ALL CPP COMPILABLE IMPLEMENTATION FILES THAT MAKE UP THE PROJECT
-SRC_FILES = main.cpp Cell.cpp Grid.cpp WinMessage.cpp
+SRC_FILES = main.cpp Cell.cpp Grid.cpp WinMessage.cpp GameLog.cpp
 
 # NO EDITS NEEDED BELOW THIS LINE
 
@@ -71,4 +71,4 @@ depend:
 .PHONY: all clean depend
 
 # DEPENDENCIES
-main.o: main.cpp Cell.cpp Cell.h Grid.cpp Grid.h WinMessage.cpp WinMessage.h
+main.o: main.cpp Cell.cpp Cell.h Grid.cpp Grid.h WinMessage.cpp WinMessage.h GameLog.cpp Gamelog.h

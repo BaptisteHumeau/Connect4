@@ -31,6 +31,7 @@ public:
     bool containsYellow() const;
     bool containsColor(const int COLOR);
     bool isFilled();
+    void reset();
 };
 
 #endif

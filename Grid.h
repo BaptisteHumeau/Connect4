@@ -15,9 +15,13 @@ private:
 public:
     Grid(const int CELL_SIZE);
     ~Grid();
+    Grid(const Grid &other);
+    Grid &operator=(const Grid &other);
 
+    void reset();
     int checkCursorHover(const int X, const int Y);
     void highlightColumn(const int COLUMN_INDEX);
+    void unhighlightAll();
     void fillColumn(const int COLUMN_INDEX, const int COLOR);
     bool checkWin(const int COLOR) const;
     int findMove() const;

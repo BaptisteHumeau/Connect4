@@ -8,11 +8,15 @@ class WinMessage
 {
 private:
     std::string _winner;
-    sf::Text _textBox;
-    sf::Font _font;
+    sf::Text _textBoxMain;
+    sf::Font _fontTitle;
+
+    sf::Text _TextBoxBody;
+    sf::Font _fontBody;
 
 public:
-    WinMessage(const std::string WINNER, const sf::Color COLOR, const std::string FONT_PATH, const int WINDOW_SIZE_X);
+    WinMessage(const sf::Color COLOR, const std::string FONT_TITLE, const std::string FONT_BODY, const int WINDOW_SIZE_X);
+    void setWinner(const std::string WINNER, const int WINDOW_SIZE_X);
 
     void draw(sf::RenderWindow &window);
 };

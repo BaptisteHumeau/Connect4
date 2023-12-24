@@ -1,5 +1,7 @@
 #include "Grid.h"
 
+#include <cstdlib>
+
 Grid::Grid(const int CELL_SIZE) : _cellSize(CELL_SIZE)
 {
     const int ORIGINAL_Y = 200;
@@ -19,16 +21,45 @@ Grid::Grid(const int CELL_SIZE) : _cellSize(CELL_SIZE)
     }
 }
 
-Grid::~Grid()
+Grid::Grid(const Grid &other) : _cellSize(other._cellSize)
 {
-    // Deallocate memory for each Cell
-    for (int i = 0; i < COLS; i++)
+    for (int i = 0; i < ROWS; i++)
     {
-        for (int j = 0; j < ROWS; j++)
+        for (int j = 0; j < COLS; j++)
         {
-            delete cells[j][i];
+            // Create new cells and copy the contents
+            cells[i][j] = new Cell(*(other.cells[i][j]));
         }
     }
+}
+
+Grid::~Grid()
+{
+    for (int i = 0; i < ROWS; i++)
+    {
+        for (int j = 0; j < COLS; j++)
+        {
+            delete cells[i][j];
+        }
+    }
+}
+
+Grid &Grid::operator=(const Grid &other)
+{
+    if (this != &other)
+    {
+        _cellSize = other._cellSize;
+        for (int i = 0; i < COLS; i++)
+        {
+            for (int j = 0; j < ROWS; j++)
+            {
+                *cells[j][i] = *other.cells[j][i];
+            }
+        }
+    }
+
+    // Return the modified object
+    return *this;
 }
 
 int Grid::checkCursorHover(const int X, const int Y)
@@ -61,6 +92,17 @@ void Grid::highlightColumn(const int INDEX)
             {
                 this->cells[i][j]->setHighlighted(false);
             }
+        }
+    }
+}
+
+void Grid::unhighlightAll()
+{
+    for (int i = 0; i < 6; i++)
+    {
+        for (int j = 0; j < 7; j++)
+        {
+            this->cells[i][j]->setHighlighted(false);
         }
     }
 }
@@ -177,8 +219,47 @@ bool Grid::checkWin(const int COLOR) const
 
 int Grid::findMove() const
 {
+    // Check for a move to block the opponent from winning
+    for (int i = 0; i < COLS; i++)
+    {
+        // Simulate the opponent's move
+        Grid simulatedGrid = *this;
+        simulatedGrid.fillColumn(i, 2);
 
-    return -1; // Return -1 if no move is found
+        // Check if the opponent has a winning move
+        if (simulatedGrid.checkWin(2))
+        {
+            return i;
+        }
+    }
+
+    // Check for a winning move
+    for (int i = 0; i < COLS; i++)
+    {
+        Grid simulatedGrid = *this;
+        simulatedGrid.fillColumn(i, 1);
+
+        // Check if the move results in a win
+        if (simulatedGrid.checkWin(1))
+        {
+            return i;
+        }
+    }
+
+    // If no winning or blocking move, choose a random valid move
+    int randomIndex = rand() % 7;
+    return randomIndex;
+}
+
+void Grid::reset()
+{
+    for (int i = 0; i < 6; i++)
+    {
+        for (int j = 0; j < 7; j++)
+        {
+            this->cells[i][j]->reset();
+        }
+    }
 }
 
 void Grid::draw(sf::RenderWindow &window)
